@@ -15,30 +15,31 @@ http.listen("4000",function(){
 
 io.on("connection",(socket)=>{
     
-    console.log("a new connection to the room chat");
+    console.log("join to server");
 
-    socket.emit("loggedIn",{ // emit all users and all messages
-        users:users.map(s=>s.userName),
-        messages:messages
+    socket.emit("loggedIn",{                             
+        users:users.map(s=>s.userName),             // emit all usernames to the new connected user
+        messages:messages                           // emit all messages to the new connected user
     })
 
-    socket.on("newUser", userName=>{
-        console.log("new user is connected")
-        socket.userName =userName;                          // I dont know from where this userName came 
+    socket.on("newUser", userName=>{                //recieve the name of the new connected user
+        console.log(userName+" is connected");
+        socket.userName =userName;                           
         users.push(socket);
 
-        io.emit("UserOnLine",socket.userName)
+        io.emit("UserOnLine",socket.userName);      // send to all users the new connected user
     })
     socket.on('message',message=>{
-        messages.push({msg:message,user:socket.userNamem,index:index}) //msg content, user who send it, and index represent the order of msg
-        io.emit("msg",message)
+        messages.push({msg:message,user:socket.userNamem,index:index}); //msg content, user who send it, and index represent the order of msg
+        io.emit("msg",message);
         index++; // for the next msg
     })
 
     
-    socket.on("disconnected",()=>{
-        console.log("someone has left the room chat")
-        users.splice(users.indexOf(socket),1) // remove the socket from the array => cause user has left the room chat
+    socket.on("disconnect",()=>{
+        console.log("someone has left the room chat");
+        io.emit("userLeft", socket.userName);
+        users.splice(users.indexOf(socket),1); // remove the socket from the array => cause user has left the room chat
     })
 
 });
