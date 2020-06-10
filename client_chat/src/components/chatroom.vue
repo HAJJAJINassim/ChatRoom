@@ -1,33 +1,34 @@
 <template>
 <div>
-    <div class="showmessage">
+     <div class="showmessage">
         <div v-for="msg in messages" v-bind:key="msg">{{msg}}</div>
     </div>
+    
 
     <div class="message">
-        <form>
+        
             <input type="text" v-model="message">
-            <button v-bind:disabled="!message" v-on:click="sendMessage()">Send</button>
-        </form>
-    </div>
+            <button v-bind:disabled="!message" v-on:click="sendMessage()" >Send</button>
+        
+    </div> 
+    
 </div>
 
 
-</template>
+</template> 
 <script>
 
 
 export default {
     name:"ChatRoom",
-    props:[messages],
+    props:['messages'],
     data:function(){
         return {
-            message=""
-
+            message:""
         }
     },
-    method:{
-        sendMessage :function () {
+    methods:{
+        sendMessage : function () {
             if(!this.message){
                 alert("enter a message please");
             }

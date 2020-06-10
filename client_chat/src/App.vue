@@ -8,7 +8,7 @@
       <!-- print the user name -->
       <h4> your user name is {{userName}}</h4>
     </div>
-    <ChatRoom v-bind:message="message" ></ChatRoom>
+    <ChatRoom v-bind:messages="messages" v-on:sendmsg="sfitserver($event)"></ChatRoom>
   </div>
 </template>
 
@@ -23,11 +23,10 @@ export default {
    },
   data:function(){
       return{
-        
         userName:"",
         socket:io("http://localhost:4000"),
         messages:[],
-        users:[]
+        users:[],
       };
     },
     methods:{
@@ -52,7 +51,13 @@ export default {
             this.users.splice(this.users.indexOf(user),1);
           }));
         
+      },
+      sfitserver: function(message) {
+        console.log(message)
+        this.socket.emit("message",message)
+        
       }
+      
     },
     mounted: function(){
       this.userName=prompt("what is your username", "noName");
