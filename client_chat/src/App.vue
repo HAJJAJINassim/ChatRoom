@@ -8,7 +8,7 @@
       <!-- print the user name -->
       <h4> your user name is {{userName}}</h4>
     </div>
-    <ChatRoom v-bind:messages="messages" v-on:sendmsg="sfitserver($event)"></ChatRoom>
+    <ChatRoom v-bind:messages="messages" v-on:sendmsg="sendMsgToServer($event)"></ChatRoom>
   </div>
 </template>
 
@@ -38,7 +38,6 @@ export default {
         })
         
         // listening to any changes came from the server
-
         this.socket.on("UserOnLine",(user=>{ // receive a new user 
             this.users.push(user);
           }));
@@ -52,7 +51,7 @@ export default {
           }));
         
       },
-      sfitserver: function(message) {
+      sendMsgToServer: function(message) {
         console.log(message)
         this.socket.emit("message",message)
         

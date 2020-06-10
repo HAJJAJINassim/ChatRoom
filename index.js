@@ -30,7 +30,8 @@ io.on("connection",(socket)=>{
         io.emit("UserOnLine",socket.userName);      // send to all users the new connected user
     })
     socket.on('message',message=>{
-        messages.push({msg:message,user:socket.userNamem,index:index}); //msg content, user who send it, and index represent the order of msg
+        messages.push({msg:message,user:socket.userName,index:index}); //msg content, user who send it, and index represent the order of msg
+        console.log(messages);
         io.emit("msg",message);
         index++; // for the next msg
     })
